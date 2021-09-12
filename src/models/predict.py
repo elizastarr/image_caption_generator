@@ -18,7 +18,7 @@ def predict_decoder():
     model_folder = Path("models/")
     data_folder = Path("data/processed")
     idx_to_word, _ = load_idx_word_dicts()
-    image_codes_test, _, _ = load_test()
+    image_representations_test, _, _ = load_test()
 
     # Get decoder (with LSTM weights)
     decoder = Decoder()
@@ -28,7 +28,7 @@ def predict_decoder():
     )
 
     # Get predictions
-    predictions_idx = decoder.predict(image_codes_test)
+    predictions_idx = decoder.predict(image_representations_test)
     predictions_word = [
         [idx_to_word.get(key) for key in prediction] for prediction in predictions_idx
     ]

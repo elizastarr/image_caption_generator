@@ -3,6 +3,7 @@ Image Caption Generator using an LSTM ANN
 
 Code for the second technical interview at PTTRNS.ai.
 
+This project was orignally completed as an assignment for a Deep Learning course at the Technical University of Eindhoven, and is based on the paper [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/abs/1411.4555) by Vinyals et al. in 2015.
 
 The Dataset
 ------------
@@ -25,7 +26,7 @@ To Run:
 $ python src/data/make_dataset.py data/raw data/processed
 ```
 
-The Long-Short-Term-Memory Model 
+Training a Long-Short-Term-Memory Learner
 ------------
 Purpose:
 Learn weights for the caption generating model 
@@ -55,8 +56,28 @@ Training settings:
 - Cross-entropy loss
 - Report Accuracy
 
-![alt text](https://github.com/elizastarr/[reponame]/blob/[branch]/image.jpg?raw=true)
-![alt text](https://github.com/elizastarr/[reponame]/blob/[branch]/image.jpg?raw=true)
+### Training Results
+
+![Training Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_training_accuracy.svg?raw=true "Training Accuracy")
+
+![Validation Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_validation_accuracy.svg?raw=true "Validation Accuracy")
+
+Final train Evaluation: Categorical Cross Entropy: 2.27, Categorical Accuracy: 0.72
+
+Final validation Evaluation. Categorical Cross Entropy: 2.27, Categorical Accuracy: 0.71
+
+
+Predicting Captions with an LSTM Decoder
+------------
+
+We use another LSTM model with the trained weights from the LSTM Learner to predict captions given image representations. 
+
+We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `./notebooks/prediction_analysis.ipynb`. BLEU scores are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf)
+
+Results
+------------
+
+![10 Sample images and predicted captions](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/predictions.png?raw=true "10 Sample images and predicted captions")
 
 Project Organization
 ------------
@@ -107,7 +128,5 @@ Project Organization
 
 Acknowledgements
 ------------
-
-This project was orignally completed as an assignment for a Deep Learning course at the Technical University of Eindhoven, and is based on the paper [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/abs/1411.4555) by Vinyals et al. in 2015.
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>

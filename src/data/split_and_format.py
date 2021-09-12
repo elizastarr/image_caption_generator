@@ -11,12 +11,12 @@ def train_test_val_split(data, save: bool = False):
 '''
 format_as_matrix() given by the instructor.
 '''
-def format_as_matrix(codes, captions, max_caption_length, word_to_idx):
-        if codes.shape[0] != len(captions):
-            raise AssertionError("Different number of codes and captions.")
+def format_as_matrix(representations, captions, max_caption_length, word_to_idx):
+        if representations.shape[0] != len(captions):
+            raise AssertionError("Different number of representations and captions.")
         
-        N = codes.shape[0]
-        duplicate_codes = None
+        N = representations.shape[0]
+        duplicate_representations = None
         labels = None
         for k in range(5):
             cur_labels = np.zeros((N, max_caption_length), dtype=np.uint32)
@@ -24,11 +24,11 @@ def format_as_matrix(codes, captions, max_caption_length, word_to_idx):
                 for count, w in enumerate(captions[l][k]):
                     cur_labels[l, count] = word_to_idx[w]
 
-            if duplicate_codes is None:
-                duplicate_codes = codes
+            if duplicate_representations is None:
+                duplicate_representations = representations
                 labels = cur_labels
             else:
-                duplicate_codes = np.concatenate((duplicate_codes, codes), 0)
+                duplicate_representations = np.concatenate((duplicate_representations, representations), 0)
                 labels = np.concatenate((labels, cur_labels), 0)
         
-        return duplicate_codes, labels
+        return duplicate_representations, labels

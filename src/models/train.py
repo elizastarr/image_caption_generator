@@ -19,14 +19,14 @@ logs_folder = Path("logs/")
 
 
 def train_LSTM_learner():
-    image_codes_train, captions_train, _ = load_train()
-    image_codes_val, captions_val, _ = load_val()
+    image_representations_train, captions_train, _ = load_train()
+    image_representations_val, captions_val, _ = load_val()
 
     model = LSTM_learner()
     early_stopping_callback = EarlyStopping(
         monitor="val_loss", min_delta=0, patience=1, verbose=1, mode="auto"
     )
-    tensorboard_callback = TensorBoard(log_dir=logs_folder, update_freq=50)  # write every 50 batches
+    #tensorboard_callback = TensorBoard(log_dir=logs_folder, update_freq=50)  # write every 50 batches
     model.compile(
         optimizer=optimizers.Adam(learning_rate=0.001),
         loss="sparse_categorical_crossentropy",
@@ -34,17 +34,17 @@ def train_LSTM_learner():
     )
     model.fit(
         [
-            image_codes_train,
+            image_representations_train,
             captions_train[:, :-1],  # remove last stopword from each caption
         ],
         captions_train,
-        validation_data=([image_codes_val, captions_val[:, :-1]], captions_val),
+        validation_data=([image_representations_val, captions_val[:, :-1]], captions_val),
         batch_size=100,
         epochs=100,
-        callbacks=[early_stopping_callback, tensorboard_callback],
+        callbacks=[early_stopping_callback], #, tensorboard_callback
     )
 
-    #model.save(os.path.join(model_folder, "LSTM_learner.h5"))
+    model.save(os.path.join(model_folder, "LSTM_learner.h5"))
     return model
 
 
@@ -56,12 +56,12 @@ else:
     LSTM_model = load_model(os.path.join(model_folder, "LSTM_learner.h5"))
 
 # Get data for evaluation
-image_codes_train, captions_train, _ = load_train()
-image_codes_val, captions_val, _ = load_val()
+image_representations_train, captions_train, _ = load_train()
+image_representations_val, captions_val, _ = load_val()
 
 # Final Evaluation scores from the trained model.
 scores = LSTM_model.evaluate(
-    [image_codes_train, captions_train[:, 1:]], captions_train, return_dict=True
+    [image_representations_train, captions_train[:, 1:]], captions_train, return_dict=True
 )
 print(
     "{} Evaluation. Categorical Cross Entropy: {}, Categorical Accuracy: {}".format(
@@ -69,7 +69,7 @@ print(
     )
 )
 scores = LSTM_model.evaluate(
-    [image_codes_val, captions_val[:, 1:]], captions_val, return_dict=True
+    [image_representations_val, captions_val[:, 1:]], captions_val, return_dict=True
 )
 print(
     "{} Evaluation. Categorical Cross Entropy: {}, Categorical Accuracy: {}".format(

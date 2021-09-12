@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 import pickle
 
-from image_representations import get_image_codes
+from image_representations import get_image_representations
 from caption_preprocessing import get_caption_dictionaries
 from split_and_format import train_test_val_split, format_as_matrix
 
@@ -27,9 +27,9 @@ def main(input_filepath, output_filepath):
     print('images shape: ', images.shape, ' captions length: ', len(captions))
 
     # Get representations
-    image_codes = get_image_codes(images)
-    image_codes = image_codes.reshape(len(images), 20480)
-    print(image_codes.shape)
+    image_representations = get_image_representations(images)
+    image_representations = image_representations.reshape(len(images), 20480)
+    print(image_representations.shape)
 
     # Preprocess captions
     idx_to_word, word_to_idx, max_caption_length, total_words, num_words = get_caption_dictionaries(captions)
@@ -51,22 +51,22 @@ def main(input_filepath, output_filepath):
 
     # Split data into train, test, and validation 
     images_train, images_test, images_val = train_test_val_split(images)
-    image_codes_train, image_codes_test, image_codes_val = train_test_val_split(image_codes)
+    image_representations_train, image_representations_test, image_representations_val = train_test_val_split(image_representations)
     captions_train, captions_test, captions_val = train_test_val_split(captions)
 
-    # Format codes and captions as matrices
-    image_codes_train, captions_train = format_as_matrix(image_codes_train, captions_train, max_caption_length, word_to_idx)
-    image_codes_test, captions_test = format_as_matrix(image_codes_test, captions_test, max_caption_length, word_to_idx)
-    image_codes_val, captions_val = format_as_matrix(image_codes_val, captions_val, max_caption_length, word_to_idx)
+    # Format representations and captions as matrices
+    image_representations_train, captions_train = format_as_matrix(image_representations_train, captions_train, max_caption_length, word_to_idx)
+    image_representations_test, captions_test = format_as_matrix(image_representations_test, captions_test, max_caption_length, word_to_idx)
+    image_representations_val, captions_val = format_as_matrix(image_representations_val, captions_val, max_caption_length, word_to_idx)
 
-    # Store images, image_codes, and captions
+    # Store images, image_representations, and captions
     pickle.dump(images_train, open(os.path.join(output_filepath, "images_train.pkl"), 'wb'))
     pickle.dump(images_test, open(os.path.join(output_filepath, "images_test.pkl"), 'wb'))
     pickle.dump(images_val, open(os.path.join(output_filepath, "images_val.pkl"), 'wb'))
 
-    pickle.dump(image_codes_train, open(os.path.join(output_filepath, "image_codes_train.pkl"), 'wb'))
-    pickle.dump(image_codes_test, open(os.path.join(output_filepath, "image_codes_test.pkl"), 'wb'))
-    pickle.dump(image_codes_val, open(os.path.join(output_filepath, "image_codes_val.pkl"), 'wb'))
+    pickle.dump(image_representations_train, open(os.path.join(output_filepath, "image_representations_train.pkl"), 'wb'))
+    pickle.dump(image_representations_test, open(os.path.join(output_filepath, "image_representations_test.pkl"), 'wb'))
+    pickle.dump(image_representations_val, open(os.path.join(output_filepath, "image_representations_val.pkl"), 'wb'))
 
     pickle.dump(captions_train, open(os.path.join(output_filepath, "captions_train.pkl"), 'wb'))
     pickle.dump(captions_test, open(os.path.join(output_filepath, "captions_test.pkl"), 'wb'))

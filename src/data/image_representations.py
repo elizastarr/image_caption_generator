@@ -40,10 +40,10 @@ def eval_layer_batched(model, layer_name: str, x: np.ndarray, batch_size: int):
     return ret_vals
 
 
-def get_image_codes(images):
+def get_image_representations(images):
 
     convnet = MobileNetV2(input_shape=(128, 128, 3),
                           include_top=False, weights='imagenet')
-    image_codes = eval_layer_batched(convnet, 'Conv_1', images, 200)
-    image_codes = image_codes.reshape(len(images), 20480)
-    return image_codes
+    image_representations = eval_layer_batched(convnet, 'Conv_1', images, 200)
+    image_representations = image_representations.reshape(len(images), 20480)
+    return image_representations
