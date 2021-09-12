@@ -6,6 +6,8 @@ Code for the second technical interview at PTTRNS.ai.
 
 The Dataset
 ------------
+Download the data for this project (./data/ folder and ./models/ folder) from [Google Drive](https://drive.google.com/drive/folders/1s2X-gJgibEo6AVff9HqgqJ_1EkIkFrua?usp=sharing). 
+
 The raw data in ```data/raw``` and ```data/processed``` contains 8,000 preprocessed images and captions per image from the [Flicker8k](https://www.kaggle.com/adityajn105/flickr8k/activity) dataset "for sentence-based image description and search, consisting of 8,000 images that are each paired with five different captions which provide clear descriptions of the salient entities and events." The Kaggle data has already been preprocessed in the following ways:
 - RGB images are rescaled to 128 x 128 x 3
 - Captions do not have punctuation or special tokens and are in lower case
