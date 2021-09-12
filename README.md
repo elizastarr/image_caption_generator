@@ -3,7 +3,7 @@ Image Caption Generator using an LSTM ANN
 
 Code for the second technical interview at PTTRNS.ai.
 
-This project was orignally completed as an assignment for a Deep Learning course at the Technical University of Eindhoven, and is based on the paper [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/abs/1411.4555) by Vinyals et al. in 2015.
+This project was orignally completed as a jupyter notebook assignment for a Deep Learning course at the Technical University of Eindhoven, and is based on the paper [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/abs/1411.4555) by Vinyals et al. in 2015.
 
 The Dataset
 ------------
@@ -14,6 +14,8 @@ The raw data in ```data/raw``` and ```data/processed``` contains 8,000 preproces
 - Captions do not have punctuation or special tokens and are in lower case
 - Each caption is now a list of strings e.g. ['the', 'cow', 'jumped', 'over', 'the',' moon']
 - Words occuring less than 5 times in the whole corpus have been removed
+
+
 
 Preprocessing
 ------------
@@ -56,28 +58,34 @@ Training settings:
 - Cross-entropy loss
 - Report Accuracy
 
+To run:
+```$ python src/models/train.py```
+
 ### Training Results
 
-![Training Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_training_accuracy.svg?raw=true "Training Accuracy")
+#### Training Accuracy
+![Training Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_training_accuracy.svg?raw=true)
 
-![Validation Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_validation_accuracy.svg?raw=true "Validation Accuracy")
+#### Validation Accuracy
+![Validation Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_validation_accuracy.svg?raw=true)
 
-Final train Evaluation: Categorical Cross Entropy: 2.27, Categorical Accuracy: 0.72
-
-Final validation Evaluation. Categorical Cross Entropy: 2.27, Categorical Accuracy: 0.71
-
+Final Evaluation on Whole Train Dataset. Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
+Final Evaluation on Whole Validation Dataset. Categorical Cross Entropy: 2.34, Categorical Accuracy: 0.72
 
 Predicting Captions with an LSTM Decoder
 ------------
 
 We use another LSTM model with the trained weights from the LSTM Learner to predict captions given image representations. 
 
-We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `./notebooks/prediction_analysis.ipynb`. BLEU scores are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf)
+To run:
+```$ python src/models/predict.py```
 
-Results
+Analysis
 ------------
+We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `./notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf). The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row.
 
-![10 Sample images and predicted captions](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/predictions.png?raw=true "10 Sample images and predicted captions")
+#### 10 Sample images and predicted captions
+![10 Sample images and predicted captions](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/predictions.png?raw=true)
 
 Project Organization
 ------------

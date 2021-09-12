@@ -26,7 +26,7 @@ def train_LSTM_learner():
     early_stopping_callback = EarlyStopping(
         monitor="val_loss", min_delta=0, patience=1, verbose=1, mode="auto"
     )
-    #tensorboard_callback = TensorBoard(log_dir=logs_folder, update_freq=50)  # write every 50 batches
+    tensorboard_callback = TensorBoard(log_dir=logs_folder, update_freq=50)  # write every 50 batches
     model.compile(
         optimizer=optimizers.Adam(learning_rate=0.001),
         loss="sparse_categorical_crossentropy",
@@ -41,10 +41,14 @@ def train_LSTM_learner():
         validation_data=([image_representations_val, captions_val[:, :-1]], captions_val),
         batch_size=100,
         epochs=100,
-        callbacks=[early_stopping_callback], #, tensorboard_callback
+        callbacks=[early_stopping_callback, tensorboard_callback],
     )
 
-    model.save(os.path.join(model_folder, "LSTM_learner.h5"))
+    try:
+        model.save_weights(os.path.join(model_folder, "LSTM_learner_weights.h5"))
+    except:
+        print("Could not save model.")
+
     return model
 
 
@@ -78,7 +82,7 @@ print(
 )
 
 """ OUTPUT
-Train Evaluation. Categorical Cross Entropy: 2.2737784385681152, Categorical Accuracy: 0.7164350152015686
-Validation Evaluation. Categorical Cross Entropy: 2.267740488052368, Categorical Accuracy: 0.7170857191085815
+Train Evaluation. Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
+Validation Evaluation. Categorical Cross Entropy: 2.34, Categorical Accuracy: 0.72
 """
 
