@@ -1,4 +1,4 @@
-pttrns_interview
+Image Caption Generator using an LSTM ANN
 ==============================
 
 Code for the second technical interview at PTTRNS.ai.
