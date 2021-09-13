@@ -11,7 +11,6 @@ import pickle
 
 from src.data.load_data import load_test, load_idx_word_dicts
 from decoder import Decoder
-from src.analysis.visualize import show_10_images_and_captions_grid
 
 
 def predict_decoder():

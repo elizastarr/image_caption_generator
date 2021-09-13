@@ -8,10 +8,12 @@ def test_custom():
 
     try:
         LSTM_learner()
+        print("LSTM Learner works.")
     except:
         print("LSTM Learner failure.")
     try:
         Decoder()
+        print("Decoder works.")
     except:
         print("LSTM Learner failure.")
 

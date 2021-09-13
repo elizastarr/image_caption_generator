@@ -1,14 +1,14 @@
-name: pttrns_py3.8
+name: image_caption_generator
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
-  - tensorflow
-  - keras
-  - pandas
-  - nltk
+  - python=3.8.10
+  - tensorflow=2.4.3
+  - keras=2.4.3
+  - pandas=1.3.2
+  - nltk=3.6.2
   - ipykernel
-  - black
-  - jupyter
-
+  - numpy=1.19
+  - python-dotenv
+  - pip
