@@ -28,6 +28,11 @@ The raw data in ```data/raw``` and ```data/processed``` contains 8,000 preproces
 - Each caption is now a list of strings e.g. ['the', 'cow', 'jumped', 'over', 'the',' moon']
 - Words occuring less than 5 times in the whole corpus have been removed
 
+**Example Image and Caption**
+
+![Example image and caption](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/example_train_image.png?raw=true)
+
+
 Further Preprocessing
 ------------
 1. Obtain 20480-dimensional representations of the images from the first convolutional layer of MobileNetV2 (pretrained on ImageNet).
@@ -71,14 +76,6 @@ To train and recieve final evaluation scores, run:
 
 To load the trained model and recieve final evaluation scores, run:
 - ```$ python src/models/train.py --load```
-
-**Training Accuracy**
-
-![Training Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_training_accuracy.svg?raw=true)
-
-**Validation Accuracy**
-
-![Validation Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_validation_accuracy.svg?raw=true)
 
 **Final Evaluation on Whole Datasets** 
 - Train: Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72

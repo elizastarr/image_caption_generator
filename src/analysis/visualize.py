@@ -29,17 +29,24 @@ def bleu_score_histogram(bleu_scores: pd.DataFrame, file_name: str = None):
         
     plt.show()
 
-def show_random_image_and_caption_individual(images: np.ndarray, captions: List, idx_to_word: Dict, quantity: int):
+def show_random_image_and_caption_individual(images: np.ndarray, captions: List, idx_to_word: Dict, quantity: int, file_name: str = None):
     for i in range(quantity):
+        separator = ', '
         idx = np.random.randint(0, images.shape[0])
 
         encoded_caption = captions[idx, ...]
         encoded_caption = [k for k in encoded_caption if k >= 0]
         caption = [idx_to_word[i] for i in encoded_caption]
-        print(caption)
-        print('\n\n')
 
         plt.imshow(images[idx % images.shape[0], ...])
+        formatted_caption = separator.join(caption).replace(",","").replace("_","")
+        plt.xlabel(formatted_caption, wrap=True, fontsize=8, ha='center')
+
+        if file_name is not None:
+            print("Saving image")
+            figure_folder = Path("reports/figures/")
+            plt.savefig(os.path.join(figure_folder, file_name), dpi=300)
+            
         plt.show()
 
 def show_10_images_and_captions_grid(images: np.ndarray, captions: List, encoded: bool = True, file_name: str = None):
@@ -66,7 +73,6 @@ def show_10_images_and_captions_grid(images: np.ndarray, captions: List, encoded
     if file_name is not None:
         figure_folder = Path("reports/figures/")
         plt.savefig(os.path.join(figure_folder, file_name), dpi=300)
-        
 
     plt.show() 
 
@@ -90,6 +96,5 @@ if __name__ == '__main__':
     idx_to_word = pickle.load(
         open(os.path.join(data_folder, "idx_to_word.pkl"), 'rb'))
 
-    show_random_image_and_caption_individual(images_train, captions_train, idx_to_word, 1)
-    show_random_image_and_caption_individual(images_val, captions_val, idx_to_word, 1)
+    show_random_image_and_caption_individual(images_train, captions_train, idx_to_word, 1, file_name='example_train_image.png')
     show_10_images_and_captions_grid(images_test, captions_test, file_name='example_images.png')
