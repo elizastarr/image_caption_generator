@@ -7,7 +7,7 @@ Set Up the Project
 ------------
 1. Clone repository and navigate to the base directory. 
 
-2. Create a new conda environment, with or without the environment.yml in the base directory:
+2. Create a new conda environment with the environment.yml.
     - ```$ make create_environment```
 
 3. Install custom packages from pip.
@@ -57,8 +57,6 @@ Training a Long-Short-Term-Memory Learner
 **Output:**
 1. Categorical distribution over the words in the corpus
 
-**Total parameters:** 15,543,168
-
 **Training settings:**
 - Adam optimizer with learning rate 1e-3 and early stopping using the validation set
 - Batch size 100
@@ -66,13 +64,20 @@ Training a Long-Short-Term-Memory Learner
 - Cross-entropy loss
 - Report Accuracy
 
-To train, run:
+See ```logs/train/``` and ```logs/validation/``` for TensorBoard event files.
+
+To train and recieve final evaluation scores, run:
 - ```$ python src/models/train.py```
 
+To load the trained model and recieve final evaluation scores, run:
+- ```$ python src/models/train.py --load```
+
 **Training Accuracy**
+
 ![Training Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_training_accuracy.svg?raw=true)
 
 **Validation Accuracy**
+
 ![Validation Accuracy](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/LSTM_learner_validation_accuracy.svg?raw=true)
 
 **Final Evaluation on Whole Datasets** 
@@ -89,16 +94,26 @@ We use another LSTM model with the trained weights from the LSTM Learner to pred
 **Output:**
 1. Caption predictions (encoded as integers) each of length 36
 
-
-To predict, run:
+To predict from the decoder and see examples, run:
 - ```$ python src/models/predict.py```
+
+To load the predictions and see examples, run:
+- ```$ python src/models/predict.py --load```
+
+**10 Sample images and predicted captions**
+
+![10 Sample images and predicted captions](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/predictions.png?raw=true)
+
 
 Caption Analysis
 ------------
-We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf). The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row.
+We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf). 
+
+The histogram below shows the distribution of scores given different n-grams. The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row. 
 
 **10 Sample images and predicted captions**
-![10 Sample images and predicted captions](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/predictions.png?raw=true)
+
+![Independent BLUE score histogram](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/independent_bleu.png?raw=true)
 
 Project Organization
 ------------

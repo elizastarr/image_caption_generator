@@ -7,15 +7,18 @@ Predictions are saved in the data/processed directory in word format (not intege
 
 from pathlib import Path
 import os
+import argparse
 import pickle
 
-from src.data.load_data import load_test, load_idx_word_dicts
+from src.data.load_data import load_test, load_idx_word_dicts, load_predictions
+from src.analysis.visualize import show_10_images_and_captions_grid
 from decoder import Decoder
 
 
+model_folder = Path("models/")
+data_folder = Path("data/processed")
+
 def predict_decoder():
-    model_folder = Path("models/")
-    data_folder = Path("data/processed")
     idx_to_word, _ = load_idx_word_dicts()
     image_representations_test, _, _ = load_test()
 
@@ -38,7 +41,22 @@ def predict_decoder():
         open(os.path.join(data_folder, "predictions_word_test.pkl"), "wb"),
     )
 
+    return predictions_word
 
 
-predict_decoder()
+parser = argparse.ArgumentParser()
+parser.add_argument("--load", help="Load predictions from data/ folder instead of predicting",
+                    action="store_true")
+args = parser.parse_args()
+
+if args.load:
+    print("Loading predictions from data/ folder.")
+    predictions = load_predictions()
+else:
+    print("Retrieving predictions from decoder.")
+    predictions = predict_decoder()
+    
+_, _, images_test = load_test()
+show_10_images_and_captions_grid(images_test, predictions, encoded=False)
+
 

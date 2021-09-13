@@ -21,11 +21,11 @@ endif
 #################################################################################
 
 ## Install Python Dependencies
-requirements: test_environment
+requirements:
 	$(PYTHON_INTERPRETER) -m pip install image-caption-generator-elizastarr
 
 ## Make Dataset
-data: requirements
+data: 
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
 
 ## Delete all compiled Python files
@@ -38,7 +38,7 @@ create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda env create --name envname --file=environment.yml
+	conda env create --name image_caption_generator --file=environment.yml
 endif
 		@echo ">>> New conda env created. Activate with:\nsource activate image_caption_generator"
 else

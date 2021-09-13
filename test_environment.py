@@ -8,16 +8,18 @@ def test_custom():
 
     try:
         LSTM_learner()
-        print("LSTM Learner works.")
+        print("LSTM Learner class instantiates.")
     except:
-        print("LSTM Learner failure.")
+        print("LSTM Learner class failure.")
     try:
         Decoder()
-        print("Decoder works.")
+        print("Decoder class instantiates.")
     except:
-        print("LSTM Learner failure.")
+        print("LSTM Learner class failure.")
 
 def main():
+    test_custom()
+
     system_major = sys.version_info.major
     if REQUIRED_PYTHON == "python":
         required_major = 2
@@ -34,7 +36,6 @@ def main():
     else:
         print(">>> Development environment passes all tests!")
 
-    test_custom()
 
 
 if __name__ == '__main__':
