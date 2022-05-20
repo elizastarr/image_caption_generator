@@ -12,3 +12,5 @@ dependencies:
   - numpy=1.19
   - python-dotenv
   - pip
+  - pip:
+    - image-caption-generator-elizastarr

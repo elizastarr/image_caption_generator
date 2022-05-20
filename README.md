@@ -7,22 +7,22 @@ Set Up the Project
 ------------
 1. Clone repository and navigate to the base directory. 
 
-2. Create a new conda environment with the environment.yml.
-    - ```$ make create_environment```
+2. Setup a new conda environment and make `./data/raw/`, `./data/processed/` and `./models/` directories.
+    - ```$ make setup```
 
-3. Install custom packages from pip.
-    - ```$ make requirements```
+3. Activate environment.
+   - ```$ conda activate image_caption_generator```
 
-4. Run environment test.
+4. (Optional) Run environment test.
     - ```$ make test_environment```
 
-5. Download the data and pretrained model for this project from Google Drive and place in base directory (i.e., ./data/ and ./models/). 
+5. Download the data and pretrained model for this project from Google Drive and place in base directory. 
     - [Download Folder](https://drive.google.com/drive/folders/1s2X-gJgibEo6AVff9HqgqJ_1EkIkFrua?usp=sharing)
 
 
 The Dataset
 ------------
-The raw data in ```data/raw``` and ```data/processed``` contains 8,000 preprocessed images and captions per image from the [Flicker8k](https://www.kaggle.com/adityajn105/flickr8k/activity) dataset "for sentence-based image description and search, consisting of 8,000 images that are each paired with five different captions which provide clear descriptions of the salient entities and events." The Kaggle data has already been preprocessed in the following ways:
+The raw data in ```data/raw``` contains 8,000 *preprocessed* images and captions per image from the [Flicker8k](https://www.kaggle.com/adityajn105/flickr8k/activity) dataset. The Kaggle data has already been preprocessed in the following ways (code not provided):
 - RGB images are rescaled to 128 x 128 x 3
 - Captions do not have punctuation or special tokens and are in lower case
 - Each caption is now a list of strings e.g. ['the', 'cow', 'jumped', 'over', 'the',' moon']
@@ -40,7 +40,7 @@ Further Preprocessing
 3. Train-test-validation splits.
 
 To preprocess the data again (not neccessary), run 
-- ```$ make data```
+- ```$ python src/data/make_dataset.py data/raw data/processed```
 
 Training a Long-Short-Term-Memory Learner
 ------------
