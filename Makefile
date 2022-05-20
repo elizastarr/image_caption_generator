@@ -18,7 +18,7 @@ endif
 # COMMANDS                                                                      #
 #################################################################################
 
-## Set up python environment and make data and model directories
+## Set up python environment
 setup:
 ifeq (True,$(HAS_CONDA))
 ifneq ("$(wildcard $(MY_ENV_DIR))","") # check if the directory is there
@@ -31,10 +31,6 @@ else
 	@echo ">>> Install conda first."
 	exit
 endif
-
-	mkdir -p data/raw
-	mkdir -p data/processed
-	mkdir -p models
 
 test_environment:
 	$(PYTHON_INTERPRETER) test_environment.py
