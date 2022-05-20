@@ -67,8 +67,3 @@ class Decoder(Model):
         x = Input(shape=(self.image_representation_dim,), name="image_input")
         model = Model(inputs=x, outputs=self.call(x))
         return model.summary()
-
-
-if __name__ == "__main__":
-    decoder = Decoder()
-    decoder.model_summary()

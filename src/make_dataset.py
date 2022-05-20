@@ -6,17 +6,23 @@ from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 import pickle
 
-from image_representations import get_image_representations
-from caption_preprocessing import get_caption_dictionaries
-from split_and_format import train_test_val_split, format_as_matrix
+from data_utils.image_representations import get_image_representations
+from data_utils.caption_preprocessing import get_caption_dictionaries
+from data_utils.split_and_format import train_test_val_split, format_as_matrix
 
 
 @click.command()
 @click.argument("input_filepath", type=click.Path(exists=True))
 @click.argument("output_filepath", type=click.Path())
-def main(input_filepath, output_filepath):
-    """Runs data processing scripts to turn raw data from (../raw) into
-    cleaned data ready to be analyzed (saved in ../processed).
+def main(input_filepath: Path, output_filepath: Path):
+    """Runs data processing scripts to turn raw data from data/raw into processed data in data/processed.
+
+    Parameters
+    ----------
+    input_filepath : Path
+        Folder data/raw
+    output_filepath : Path
+        Folder data/processed
     """
     logger = logging.getLogger(__name__)
     logger.info("making final data set from raw data")
@@ -28,8 +34,6 @@ def main(input_filepath, output_filepath):
 
     # Get representations
     image_representations = get_image_representations(images)
-    image_representations = image_representations.reshape(len(images), 20480)
-    print(image_representations.shape)
 
     # Preprocess captions
     (
@@ -39,6 +43,7 @@ def main(input_filepath, output_filepath):
         total_words,
         num_words,
     ) = get_caption_dictionaries(captions)
+
     print("idx_to_word", list(idx_to_word.items())[:10])
     print("word_to_idx", list(word_to_idx.items())[:10])
 

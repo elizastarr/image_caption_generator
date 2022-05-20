@@ -89,34 +89,3 @@ def show_10_images_and_captions_grid(
         plt.savefig(os.path.join(figure_folder, file_name), dpi=300)
 
     plt.show()
-
-
-if __name__ == "__main__":
-    data_folder = Path("data/processed/")
-
-    images_train = pickle.load(
-        open(os.path.join(data_folder, "images_train.pkl"), "rb")
-    )
-    captions_train = pickle.load(
-        open(os.path.join(data_folder, "captions_train.pkl"), "rb")
-    )
-    images_test = pickle.load(open(os.path.join(data_folder, "images_test.pkl"), "rb"))
-    captions_test = pickle.load(
-        open(os.path.join(data_folder, "captions_test.pkl"), "rb")
-    )
-    images_val = pickle.load(open(os.path.join(data_folder, "images_val.pkl"), "rb"))
-    captions_val = pickle.load(
-        open(os.path.join(data_folder, "captions_val.pkl"), "rb")
-    )
-    idx_to_word = pickle.load(open(os.path.join(data_folder, "idx_to_word.pkl"), "rb"))
-
-    show_random_image_and_caption_individual(
-        images_train,
-        captions_train,
-        idx_to_word,
-        1,
-        file_name="example_train_image.png",
-    )
-    show_10_images_and_captions_grid(
-        images_test, captions_test, file_name="example_images.png"
-    )

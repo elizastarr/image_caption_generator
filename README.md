@@ -40,7 +40,7 @@ Further Preprocessing
 3. Train-test-validation splits.
 
 To preprocess the data again (not neccessary), run
-- ```$ python src/data/make_dataset.py data/raw data/processed```
+- ```$ python src/make_dataset.py data/raw data/processed```
 
 Training a Long-Short-Term-Memory Learner
 ------------
@@ -72,10 +72,10 @@ Training a Long-Short-Term-Memory Learner
 See ```logs/train/``` and ```logs/validation/``` for TensorBoard event files.
 
 To train and recieve final evaluation scores, run:
-- ```$ python src/models/train.py```
+- ```$ python src/train.py```
 
 To load the trained model and recieve final evaluation scores, run:
-- ```$ python src/models/train.py --load```
+- ```$ python src/train.py --load```
 
 **Final Evaluation on Whole Datasets**
 - Train: Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
@@ -92,10 +92,10 @@ We use another LSTM model with the trained weights from the LSTM Learner to pred
 1. Caption predictions (encoded as integers) each of length 36
 
 To predict from the decoder and see examples, run:
-- ```$ python src/models/predict.py```
+- ```$ python src/predict.py```
 
 To load the predictions and see examples, run:
-- ```$ python src/models/predict.py --load```
+- ```$ python src/predict.py --load```
 
 **10 Sample images and predicted captions**
 
@@ -116,47 +116,45 @@ Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    ├── Makefile           <- Makefile to quickly set up the project.
+    ├── README.md          <- Instructions for the project.
+    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported.
+    ├── tox.ini            <- tox file with settings for running tox.
+    ├── environment.yaml   <- The conda requirements installed with `make setup_environment`
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── models             <- Trained and serialized models, model predictions, or model summaries.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── notebooks          <- Jupyter notebooks.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    │   └── figures        <- Generated graphics and figures to be used in reporting.
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
+    ├── data
+    │   ├── processed      <- The final data sets for model training, validation and inference.
+    │   └── raw            <- The original, immutable data dump.
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to preprocess data
-    │   │   │
-    │   │   ├── caption_preprocessing.py
-    │   │   ├── image_representations.py
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Modules and scripts for exploratory and results-oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── src                <- Source code for use in this project. Scripts are located at the base of this folder.
+        │
+        ├── predict.py     <- Script to run inference on the trained model.
+        ├── train.py       <- Script to rain the model.
+        ├── make_dataset.py<- Script to preprocesses the dataset.
+        |
+        ├── data_utils     <- Useful functions for data preprocessing.
+        │   │
+        │   ├── caption_preprocessing.py
+        │   ├── image_representations.py
+        │   ├── split_and_format.py
+        │   └── load_data.py
+        │
+        ├── models         <- Model class definitions.
+        │   │
+        │   ├── decoder.py
+        │   └── LSTM_learner.py
+        │
+        └── analysis       <- Useful functions for evaluating the model and exploring the data.
+            │
+            ├── bleu_scores.py
+            └── visualization_utils.py
 
 
 Acknowledgements

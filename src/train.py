@@ -10,8 +10,8 @@ from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import load_model
 
-from LSTM_learner import LSTM_learner
-from src.data.load_data import load_train, load_val
+from models.LSTM_learner import LSTM_learner
+from data_utils.load_data import load_train, load_val
 
 
 # Globals

@@ -53,8 +53,3 @@ class LSTM_learner(Model):
             inputs=[x_image, x_caption], outputs=self.call([x_image, x_caption])
         )
         return model.summary()
-
-
-if __name__ == "__main__":
-    model = LSTM_learner()
-    model.model_summary()

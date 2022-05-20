@@ -1,7 +1,7 @@
 import pandas as pd
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
-from src.analysis.visualize import (
+from src.analysis.visualization_utils import (
     show_10_images_and_captions_grid,
     bleu_score_histogram,
 )
@@ -59,21 +59,3 @@ def get_bleu_scores(true, predicted, smoothing: int = 0, independent: bool = Tru
         data=bleu_scores, columns=["BLEU-1", "BLEU-2", "BLEU-3", "BLEU-4"]
     )
     return bleu_scores
-
-
-if __name__ == "__main__":
-    # Get data
-    _, captions_test, images_test = load_test()
-    idx_to_word, _ = load_idx_word_dicts()
-    captions_word = [
-        [idx_to_word.get(key) for key in caption] for caption in captions_test
-    ]
-    predictions_word = load_predictions()
-
-    # Calculate BLEU scores
-    independent_bleu_scores = get_bleu_scores(
-        captions_word, predictions_word, smoothing=1, independent=True
-    )
-    print(
-        "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
-    )
