@@ -7,8 +7,8 @@ Set Up the Project
 ------------
 1. Clone repository and navigate to the base directory. 
 
-2. Setup a new conda environment and make `./data/raw/`, `./data/processed/` and `./models/` directories.
-    - ```$ make setup```
+2. Setup a new conda environment.
+    - ```$ make setup_environment```
 
 3. Activate environment.
    - ```$ conda activate image_caption_generator```

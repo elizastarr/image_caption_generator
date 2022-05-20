@@ -19,7 +19,7 @@ endif
 #################################################################################
 
 ## Set up python environment
-setup:
+setup_environment:
 ifeq (True,$(HAS_CONDA))
 ifneq ("$(wildcard $(MY_ENV_DIR))","") # check if the directory is there
 	@echo ">>> Found $(CONDA_ENV_NAME) environment in $(MY_ENV_DIR). Skipping installation..."
