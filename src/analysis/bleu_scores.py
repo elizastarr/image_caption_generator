@@ -77,4 +77,3 @@ if __name__ == "__main__":
     print(
         "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
     )
-

@@ -83,9 +83,9 @@ logs/train/*
 logs/validation/*
 
 # keep the empty folders by keeping .gitkeep
-!data/*/.gitkeep 
-!logs/*/.gitkeep 
-!models/.gitkeep 
+!data/*/.gitkeep
+!logs/*/.gitkeep
+!models/.gitkeep
 
 # Mac OS-specific storage files
 .DS_Store

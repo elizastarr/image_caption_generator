@@ -1,6 +1,6 @@
 """
-Script to predict captions using 
-    1) a decoder with the LSTM learner weights and 
+Script to predict captions using
+    1) a decoder with the LSTM learner weights and
     2) test image representations.
 Predictions are saved in the data/processed directory in word format (not integers).
 """
@@ -17,6 +17,7 @@ from decoder import Decoder
 
 model_folder = Path("models/")
 data_folder = Path("data/processed")
+
 
 def predict_decoder():
     idx_to_word, _ = load_idx_word_dicts()
@@ -45,8 +46,11 @@ def predict_decoder():
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--load", help="Load predictions from data/ folder instead of predicting",
-                    action="store_true")
+parser.add_argument(
+    "--load",
+    help="Load predictions from data/ folder instead of predicting",
+    action="store_true",
+)
 args = parser.parse_args()
 
 if args.load:
@@ -55,8 +59,6 @@ if args.load:
 else:
     print("Retrieving predictions from decoder.")
     predictions = predict_decoder()
-    
+
 _, _, images_test = load_test()
 show_10_images_and_captions_grid(images_test, predictions, encoded=False)
-
-

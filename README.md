@@ -5,7 +5,7 @@ This project was orignally completed as a jupyter notebook assignment for a Deep
 
 Set Up the Project
 ------------
-1. Clone repository and navigate to the base directory. 
+1. Clone repository and navigate to the base directory.
 
 2. Setup a new conda environment.
     - ```$ make setup_environment```
@@ -16,7 +16,7 @@ Set Up the Project
 4. (Optional) Run environment test.
     - ```$ make test_environment```
 
-5. Download the data and pretrained model for this project from Google Drive and place in base directory. 
+5. Download the data and pretrained model for this project from Google Drive and place in base directory.
     - [Download Folder](https://drive.google.com/drive/folders/1s2X-gJgibEo6AVff9HqgqJ_1EkIkFrua?usp=sharing)
 
 
@@ -39,12 +39,12 @@ Further Preprocessing
 2. Insert the stop word character '_' at the end of each string. Map the words to integers sorted by frequency using a dictionary.
 3. Train-test-validation splits.
 
-To preprocess the data again (not neccessary), run 
+To preprocess the data again (not neccessary), run
 - ```$ python src/data/make_dataset.py data/raw data/processed```
 
 Training a Long-Short-Term-Memory Learner
 ------------
-**Purpose:** Learn weights for the caption generating model 
+**Purpose:** Learn weights for the caption generating model
 
 **Inputs:**
 1. Image representations
@@ -54,7 +54,7 @@ Training a Long-Short-Term-Memory Learner
 1. Dense layer: reduce 20480D image representations to 512D image embeddings
 2. Embedding layer: map the caption integers to 512D dense caption vectors
 3. Concatenation: Concatenate the image and caption embeddings --> (1, 512)+(n, 512)=(1+n, 512)
-4. [LSTM layer (Recurrent NN)](https://www.bioinf.jku.at/publications/older/2604.pdf) 
+4. [LSTM layer (Recurrent NN)](https://www.bioinf.jku.at/publications/older/2604.pdf)
    - LSTM dropout of 0.5
    - Recurrent dropout of 0.1
 5. Dense layer with softmax activation
@@ -77,13 +77,13 @@ To train and recieve final evaluation scores, run:
 To load the trained model and recieve final evaluation scores, run:
 - ```$ python src/models/train.py --load```
 
-**Final Evaluation on Whole Datasets** 
+**Final Evaluation on Whole Datasets**
 - Train: Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
 - Validation: Categorical Cross Entropy: 2.34, Categorical Accuracy: 0.72
 
 Predicting Captions with an LSTM Decoder
 ------------
-We use another LSTM model with the trained weights from the LSTM Learner to predict captions given image representations. 
+We use another LSTM model with the trained weights from the LSTM Learner to predict captions given image representations.
 
 **Input:**
 1. Image representations
@@ -104,9 +104,9 @@ To load the predictions and see examples, run:
 
 Caption Analysis
 ------------
-We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf). 
+We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf).
 
-The histogram below shows the distribution of scores given different n-grams. The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row. 
+The histogram below shows the distribution of scores given different n-grams. The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row.
 
 **10 Sample images and predicted captions**
 
@@ -143,7 +143,7 @@ Project Organization
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to preprocess data
-    │   │   │                
+    │   │   │
     │   │   ├── caption_preprocessing.py
     │   │   ├── image_representations.py
     │   │   └── make_dataset.py

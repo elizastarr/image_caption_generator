@@ -27,7 +27,9 @@ def train_LSTM_learner():
     early_stopping_callback = EarlyStopping(
         monitor="val_loss", min_delta=0, patience=1, verbose=1, mode="auto"
     )
-    tensorboard_callback = TensorBoard(log_dir=logs_folder, update_freq=50)  # write every 50 batches
+    tensorboard_callback = TensorBoard(
+        log_dir=logs_folder, update_freq=50
+    )  # write every 50 batches
     model.compile(
         optimizer=optimizers.Adam(learning_rate=0.001),
         loss="sparse_categorical_crossentropy",
@@ -39,7 +41,10 @@ def train_LSTM_learner():
             captions_train[:, :-1],  # remove last stopword from each caption
         ],
         captions_train,
-        validation_data=([image_representations_val, captions_val[:, :-1]], captions_val),
+        validation_data=(
+            [image_representations_val, captions_val[:, :-1]],
+            captions_val,
+        ),
         batch_size=100,
         epochs=100,
         callbacks=[early_stopping_callback, tensorboard_callback],
@@ -52,6 +57,7 @@ def train_LSTM_learner():
 
     return model
 
+
 def evaluate_LSTM_learner(LSTM_model):
     # Get data for evaluation
     image_representations_train, captions_train, _ = load_train()
@@ -59,7 +65,9 @@ def evaluate_LSTM_learner(LSTM_model):
 
     # Final Evaluation scores from the trained model.
     scores = LSTM_model.evaluate(
-        [image_representations_train, captions_train[:, 1:]], captions_train, return_dict=True
+        [image_representations_train, captions_train[:, 1:]],
+        captions_train,
+        return_dict=True,
     )
     print(
         "{} Evaluation. Categorical Cross Entropy: {}, Categorical Accuracy: {}".format(
@@ -78,8 +86,9 @@ def evaluate_LSTM_learner(LSTM_model):
 
 # Load arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("--load", help="Load from models/ folder instead of training",
-                    action="store_true")
+parser.add_argument(
+    "--load", help="Load from models/ folder instead of training", action="store_true"
+)
 args = parser.parse_args()
 
 # Load model or train from scratch
@@ -100,4 +109,3 @@ evaluate_LSTM_learner(LSTM_model)
 Train Evaluation. Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
 Validation Evaluation. Categorical Cross Entropy: 2.34, Categorical Accuracy: 0.72
 """
-

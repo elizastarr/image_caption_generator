@@ -2,6 +2,7 @@ import sys
 
 REQUIRED_PYTHON = "python3"
 
+
 def test_custom():
     from src.models.LSTM_learner import LSTM_learner
     from src.models.decoder import Decoder
@@ -17,6 +18,7 @@ def test_custom():
     except:
         print("LSTM Learner class failure.")
 
+
 def main():
     test_custom()
 
@@ -26,17 +28,17 @@ def main():
     elif REQUIRED_PYTHON == "python3":
         required_major = 3
     else:
-        raise ValueError("Unrecognized python interpreter: {}".format(
-            REQUIRED_PYTHON))
+        raise ValueError("Unrecognized python interpreter: {}".format(REQUIRED_PYTHON))
 
     if system_major != required_major:
         raise TypeError(
             "This project requires Python {}. Found: Python {}".format(
-                required_major, sys.version))
+                required_major, sys.version
+            )
+        )
     else:
         print(">>> Development environment passes all tests!")
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
