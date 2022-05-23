@@ -112,6 +112,12 @@ The histogram below shows the distribution of scores given different n-grams. Th
 
 ![Independent BLUE score histogram](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/independent_bleu.png?raw=true)
 
+Tests
+------------
+To run all code tests:
+
+```python -m pytest```
+
 Project Organization
 ------------
 

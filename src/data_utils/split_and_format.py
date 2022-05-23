@@ -1,44 +1,108 @@
-from sklearn.model_selection import train_test_split
+import os
+from typing import Tuple, Union, List
+
+import pickle
 import numpy as np
 
+from sklearn.model_selection import train_test_split
 
-def train_test_val_split(data, save: bool = False):
+
+def train_test_val_split(
+    data: Union[np.ndarray, List], test_val_size: int = 1000
+) -> Tuple:
+    """Split input data into training, test, and validation
+
+    Parameters
+    ----------
+    data : Union[np.ndarray, List]
+        Image or caption input data to be split into train, test, and validation splits
+    test_val_size : int (Optional)
+        Number of test and validation instances
+    Returns
+    -------
+    Tuple
+        The input data split into train, test, and validation
+    """
 
     X_train, X_test = train_test_split(
-        data, test_size=1000, random_state=42, shuffle=True
+        data, test_size=test_val_size, random_state=42, shuffle=True
     )
     X_train, X_val = train_test_split(
-        X_train, test_size=1000, random_state=42, shuffle=True
+        X_train, test_size=test_val_size, random_state=42, shuffle=True
     )
 
     return X_train, X_test, X_val
 
 
 """
-format_as_matrix() given by the instructor.
+format_as_matrix() mostly given by the instructor.
 """
 
 
-def format_as_matrix(representations, captions, max_caption_length, word_to_idx):
+def format_as_matrix(
+    representations: np.ndarray,
+    captions: List,
+    max_caption_length: int,
+    word_to_idx: dict,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+
+    Parameters
+    ----------
+    representations : np.ndarray
+        Unique image representations
+    captions : List
+        A list containing a list of five captions per image
+    max_caption_length : int
+        Defines the number of columns in the label matrix
+    word_to_idx : dict
+        Used to encode the captions
+
+    Returns
+    -------
+    Tuple[np.ndarray, np.ndarray]
+        Image representations (each appearing 5x) and integer-encoded captions
+
+    Raises
+    ------
+    AssertionError
+        Different number of representations and caption groups.
+    """
+
+    # Note that there are 5 captions per image
     if representations.shape[0] != len(captions):
-        raise AssertionError("Different number of representations and captions.")
+        raise AssertionError("Different number of representations and caption groups.")
+
+    invalid = []
+    for idx, image_captions in enumerate(captions):
+        if len(image_captions) != 5:
+            invalid.append(idx)
+    if invalid:
+        raise AssertionError(
+            f"Each image must have 5 captions, but images {invalid} did not."
+        )
 
     N = representations.shape[0]
-    duplicate_representations = None
+    duplicated_representations = None
     labels = None
-    for k in range(5):
-        cur_labels = np.zeros((N, max_caption_length), dtype=np.uint32)
-        for l in range(N):
-            for count, w in enumerate(captions[l][k]):
-                cur_labels[l, count] = word_to_idx[w]
 
-        if duplicate_representations is None:
-            duplicate_representations = representations
-            labels = cur_labels
+    for j in range(5):  # for the jth caption of all images
+
+        # encode the words of the jth caption for all images
+        current_labels = np.zeros((N, max_caption_length), dtype=np.uint32)
+        for i in range(N):  # for the ith image
+            for index, word in enumerate(captions[i][j]):
+                current_labels[i, index] = word_to_idx[word]
+
+        # Add image representations for the jth caption
+        # Add the jth set of captions
+        if duplicated_representations is None:
+            duplicated_representations = representations
+            labels = current_labels
         else:
-            duplicate_representations = np.concatenate(
-                (duplicate_representations, representations), 0
+            duplicated_representations = np.concatenate(
+                (duplicated_representations, representations), 0
             )
-            labels = np.concatenate((labels, cur_labels), 0)
+            labels = np.concatenate((labels, current_labels), 0)
 
-    return duplicate_representations, labels
+    return duplicated_representations, labels

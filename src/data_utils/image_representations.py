@@ -91,17 +91,10 @@ def get_image_representations(images: np.ndarray) -> np.ndarray:
     np.ndarray
        Neural codes, or image representations
 
-    Raises
-    ------
-    ValueError
-        Invalid network type
     """
 
     convnet = MobileNetV2(
         input_shape=(128, 128, 3), include_top=False, weights="imagenet"
     )
     image_representations = eval_layer_batched(convnet, "Conv_1", images, 200)
-    print(convnet.summary())
-
-    image_representations = image_representations.reshape(len(images), 20480)
-    return image_representations
+    return image_representations.reshape(len(images), 20480)

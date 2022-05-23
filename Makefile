@@ -33,4 +33,4 @@ else
 endif
 
 test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
+	$(PYTHON_INTERPRETER) tests/test_environment.py

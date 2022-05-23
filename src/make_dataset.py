@@ -20,23 +20,23 @@ def main(input_filepath: Path, output_filepath: Path):
     Parameters
     ----------
     input_filepath : Path
-        Folder data/raw
+        Path of raw input data
     output_filepath : Path
-        Folder data/processed
+        Path to folder to save processed data
     """
 
     logger = logging.getLogger(__name__)
     logger.info("making final data set from raw data")
 
-    print("Loading data from data/raw.")
+    print(f"Loading data from {input_filepath}")
     raw_file_path = os.path.join(input_filepath, "Flickr8k_processed.pkl")
     images, captions = pickle.load(open(raw_file_path, "rb"))
     print("images shape: ", images.shape, " captions length: ", len(captions))
 
-    # Get representations
+    print("Retreiving image representations...")
     image_representations = get_image_representations(images)
 
-    # Preprocess captions
+    print("Encoding and analyzing captions...")
     (
         idx_to_word,
         word_to_idx,
@@ -45,23 +45,7 @@ def main(input_filepath: Path, output_filepath: Path):
         num_words,
     ) = get_caption_dictionaries(captions)
 
-    print("idx_to_word", list(idx_to_word.items())[:10])
-    print("word_to_idx", list(word_to_idx.items())[:10])
-
-    """ OUTPUT
-    idx_to_word [(0, '_'), (1, 'a'), (2, 'in'), (3, 'the'), (4, 'on'),
-                (5, 'is'), (6, 'and'), (7, 'dog'), (8, 'with'), (9, 'man')]
-    word_to_idx [('_', 0), ('a', 1), ('in', 2), ('the', 3), ('on', 4),
-                ('is', 5), ('and', 6), ('dog', 7), ('with', 8), ('man', 9)]
-    """
-
-    # Store dictionaries
-    idx_to_word_output_path = os.path.join(output_filepath, "idx_to_word.pkl")
-    word_to_idx_output_path = os.path.join(output_filepath, "word_to_idx.pkl")
-    pickle.dump(idx_to_word, open(idx_to_word_output_path, "wb"))
-    pickle.dump(word_to_idx, open(word_to_idx_output_path, "wb"))
-
-    # Split data into train, test, and validation
+    print(f"Splitting data into train, test, and validation...")
     images_train, images_test, images_val = train_test_val_split(images)
     (
         image_representations_train,
@@ -70,7 +54,7 @@ def main(input_filepath: Path, output_filepath: Path):
     ) = train_test_val_split(image_representations)
     captions_train, captions_test, captions_val = train_test_val_split(captions)
 
-    # Format representations and captions as matrices
+    print(f"Reformatting image representations and captions...")
     image_representations_train, captions_train = format_as_matrix(
         image_representations_train, captions_train, max_caption_length, word_to_idx
     )
@@ -81,7 +65,19 @@ def main(input_filepath: Path, output_filepath: Path):
         image_representations_val, captions_val, max_caption_length, word_to_idx
     )
 
-    # Store images, image_representations, and captions
+    print(f"Saving processed data to f{output_filepath}...")
+    if not os.path.exists(output_filepath):
+        os.makedirs(output_filepath)
+
+    # Dictionaries
+    pickle.dump(
+        idx_to_word, open(os.path.join(output_filepath, "idx_to_word.pkl"), "wb")
+    )
+    pickle.dump(
+        word_to_idx, open(os.path.join(output_filepath, "word_to_idx.pkl"), "wb")
+    )
+
+    # Images
     pickle.dump(
         images_train, open(os.path.join(output_filepath, "images_train.pkl"), "wb")
     )
@@ -90,6 +86,7 @@ def main(input_filepath: Path, output_filepath: Path):
     )
     pickle.dump(images_val, open(os.path.join(output_filepath, "images_val.pkl"), "wb"))
 
+    # Image representations
     pickle.dump(
         image_representations_train,
         open(os.path.join(output_filepath, "image_representations_train.pkl"), "wb"),
@@ -103,6 +100,7 @@ def main(input_filepath: Path, output_filepath: Path):
         open(os.path.join(output_filepath, "image_representations_val.pkl"), "wb"),
     )
 
+    # Captions
     pickle.dump(
         captions_train, open(os.path.join(output_filepath, "captions_train.pkl"), "wb")
     )
@@ -112,6 +110,8 @@ def main(input_filepath: Path, output_filepath: Path):
     pickle.dump(
         captions_val, open(os.path.join(output_filepath, "captions_val.pkl"), "wb")
     )
+
+    print("Processing complete.")
 
 
 if __name__ == "__main__":

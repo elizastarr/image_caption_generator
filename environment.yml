@@ -10,8 +10,10 @@ dependencies:
   - nltk=3.6.2
   - ipykernel
   - numpy=1.19
-  - pre-commit
-  - python-dotenv
+  - pre-commit=2.19.0
+  - python-dotenv=0.20.0
+  - pytest>=5.3.2,<6.0.0
   - pip
   - pip:
     - image-caption-generator-elizastarr
+    - jupyter
