@@ -2,59 +2,51 @@
 Script to predict captions using
     1) a decoder with the LSTM learner weights and
     2) test image representations.
-Predictions are saved in the data/processed directory in word format (not integers).
+Predictions are saved in the data/processed directory in word format (not index).
 """
 
-from pathlib import Path
 import os
 import argparse
-import pickle
 
-from src.data.load_data import load_test, load_idx_word_dicts, load_predictions
-from src.analysis.bleu_scores import get_bleu_scores
-from src.analysis.visualization_utils import (
+from src.data_utils.save_and_load_data import (
+    load_representations_captions_images,
+    load_predictions,
+    save_predictions,
+)
+from src.data_utils.caption_preprocessing import map_idx_to_word
+from src.analysis_utils.bleu_scores import get_bleu_scores
+from src.analysis_utils.visualization import (
     show_10_images_and_captions_grid,
     bleu_score_histogram,
 )
 from models.decoder import Decoder
-
-
-model_folder = Path("models/")
-data_folder = Path("data/processed")
+from config.core import config
 
 
 def predict_decoder():
-    idx_to_word, _ = load_idx_word_dicts()
-    image_representations_test, _, _ = load_test()
+    image_representations_test, _, _ = load_representations_captions_images("test")
 
-    # Get decoder (with LSTM weights)
+    print("Loading decoder weights...")
     decoder = Decoder()
     decoder.build(input_shape=(5000, 20480))
     decoder.load_weights(
-        os.path.join(model_folder, "LSTM_learner.h5"), by_name=True, skip_mismatch=True
+        os.path.join(config.model_folder, config.filenames.model_weights),
+        by_name=True,
+        skip_mismatch=True,
     )
 
-    # Get predictions
+    print("Getting predictions from decoder...")
     predictions_idx = decoder.predict(image_representations_test)
-    predictions_word = [
-        [idx_to_word.get(key) for key in prediction] for prediction in predictions_idx
-    ]
+    predictions_word = map_idx_to_word(predictions_idx)
 
-    # Save predictions
-    pickle.dump(
-        predictions_word,
-        open(os.path.join(data_folder, "predictions_word_test.pkl"), "wb"),
-    )
-
+    print("Saving predictions...")
+    save_predictions(predictions_word)
     return predictions_word
 
 
 def show_bleu_scores(predictions):
-    _, captions_test, images_test = load_test()
-    idx_to_word, _ = load_idx_word_dicts()
-    captions_word = [
-        [idx_to_word.get(key) for key in caption] for caption in captions_test
-    ]
+    _, captions_test, _ = load_representations_captions_images("test")
+    captions_word = map_idx_to_word(captions_test)
 
     # Calculate BLEU scores
     independent_bleu_scores = get_bleu_scores(
@@ -68,7 +60,7 @@ def show_bleu_scores(predictions):
 
 
 def show_prediciton_examples(predictions):
-    _, _, images_test = load_test()
+    _, _, images_test = load_representations_captions_images("test")
     show_10_images_and_captions_grid(images_test, predictions, encoded=False)
 
 

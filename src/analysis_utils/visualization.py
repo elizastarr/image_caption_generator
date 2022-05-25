@@ -2,10 +2,11 @@ from typing import Dict, List
 import os
 
 from pathlib import Path
-import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+from src.data_utils.save_and_load_data import load_idx_word_dicts
 
 
 def bleu_score_histogram(bleu_scores: pd.DataFrame, file_name: str = None):
@@ -62,7 +63,11 @@ def show_random_image_and_caption_individual(
 
 
 def show_10_images_and_captions_grid(
-    images: np.ndarray, captions: List, encoded: bool = True, file_name: str = None
+    images: np.ndarray,
+    captions: List,
+    idx_to_word: Dict,
+    encoded: bool = True,
+    file_name: str = None,
 ):
     idxs = np.random.choice(images.shape[0], 10, replace=False)
     separator = ", "

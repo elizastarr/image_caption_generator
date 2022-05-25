@@ -1,24 +1,25 @@
-import os
-
 import pytest
-import pickle
 
-from src.data_utils.load_data import load_test
+from src.data_utils.save_and_load_data import (
+    load_representations_captions_images,
+    load_raw,
+)
 from src.data_utils.image_representations import get_image_representations
 from src.data_utils.caption_preprocessing import get_caption_dictionaries
 
 
 @pytest.fixture(scope="session")
-def processed_data_100():
-    image_representations, captions, images = load_test()
-    return image_representations[:100], captions[:100], images[:100]
+def raw_data_100():
+    images, captions = load_raw()
+    return images[:100], captions[:100]
 
 
 @pytest.fixture(scope="session")
-def raw_data_100():
-    raw_file_path = os.path.join("data/raw", "Flickr8k_processed.pkl")
-    images, captions = pickle.load(open(raw_file_path, "rb"))
-    return images[:100], captions[:100]
+def processed_data_100():
+    image_representations, captions, images = load_representations_captions_images(
+        "test"
+    )
+    return image_representations[:100], captions[:100], images[:100]
 
 
 @pytest.fixture(scope="session")

@@ -117,6 +117,8 @@ Tests
 To run all code tests:
 
 ```python -m pytest```
+or
+```pytest tests```
 
 Project Organization
 ------------
@@ -135,6 +137,10 @@ Project Organization
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting.
     │
+    ├── config             <- Primary configurations and Config class used throughout the project
+    │
+    ├── tests              <- Pytests
+    │
     ├── data
     │   ├── processed      <- The final data sets for model training, validation and inference.
     │   └── raw            <- The original, immutable data dump.
@@ -144,6 +150,7 @@ Project Organization
         ├── predict.py     <- Script to run inference on the trained model.
         ├── train.py       <- Script to rain the model.
         ├── make_dataset.py<- Script to preprocesses the dataset.
+        ├── visualize_dataset.py
         |
         ├── data_utils     <- Useful functions for data preprocessing.
         │   │
@@ -157,10 +164,10 @@ Project Organization
         │   ├── decoder.py
         │   └── LSTM_learner.py
         │
-        └── analysis       <- Useful functions for evaluating the model and exploring the data.
+        └── analysis_utils <- Useful functions for evaluating the model and exploring the data.
             │
             ├── bleu_scores.py
-            └── visualization_utils.py
+            └── visualization.py
 
 
 Acknowledgements

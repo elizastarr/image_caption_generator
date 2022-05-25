@@ -1,12 +1,6 @@
 import pandas as pd
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
-from src.analysis.visualization_utils import (
-    show_10_images_and_captions_grid,
-    bleu_score_histogram,
-)
-from src.data.load_data import load_test, load_predictions, load_idx_word_dicts
-
 
 def get_bleu_scores(true, predicted, smoothing: int = 0, independent: bool = True):
     if independent:

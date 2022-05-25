@@ -5,11 +5,10 @@ import pickle
 import numpy as np
 
 from sklearn.model_selection import train_test_split
+from config.core import config
 
 
-def train_test_val_split(
-    data: Union[np.ndarray, List], test_val_size: int = 1000
-) -> Tuple:
+def train_test_val_split(data: Union[np.ndarray, List]) -> Tuple:
     """Split input data into training, test, and validation
 
     Parameters
@@ -25,10 +24,16 @@ def train_test_val_split(
     """
 
     X_train, X_test = train_test_split(
-        data, test_size=test_val_size, random_state=42, shuffle=True
+        data,
+        test_size=config.test_val_size,
+        random_state=config.random_state,
+        shuffle=True,
     )
     X_train, X_val = train_test_split(
-        X_train, test_size=test_val_size, random_state=42, shuffle=True
+        X_train,
+        test_size=config.test_val_size,
+        random_state=config.random_state,
+        shuffle=True,
     )
 
     return X_train, X_test, X_val
