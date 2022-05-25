@@ -1,18 +1,18 @@
 # data folders
-input_filepath: "data/raw/"
-output_filepath: "data/processed"
-model_folder: "models/"
-log_folder: "logs/"
+input_filepath: data/raw/
+output_filepath: data/processed
+model_folder: models/
+log_folder: logs/
 
 # file names
-model_weights: "LSTM_learner_weights.h5"
-raw_data: "Flickr8k_processed.pkl"
-representations: "image_representations_stage.pkl"
-captions: "captions_stage.pkl"
-images: "images_stage.pkl"
-idx_to_word: "idx_to_word.pkl"
-word_to_idx: "word_to_idx.pkl"
-predictions: "predictions_word_test.pkl"
+model_weights: LSTM_learner_weights.h5
+raw_data: Flickr8k_processed.pkl
+representations: image_representations_stage.pkl
+captions: captions_stage.pkl
+images: images_stage.pkl
+idx_to_word: idx_to_word.pkl
+word_to_idx: word_to_idx.pkl
+predictions: predictions_word_test.pkl
 
 # set train/test split
 test_val_size: 1000
@@ -22,3 +22,16 @@ random_state: 42
 batch_size: 100
 epochs: 100
 learning_rate: 0.001
+experiment_name: default
+loss: sparse_categorical_crossentropy
+metric: sparse_categorical_accuracy
+
+# callbacks
+monitor: val_loss
+mode: auto
+save_best_only: True
+save_weights_only: True
+update_freq: 50
+min_delta: 0
+patience: 1
+verbose: 1

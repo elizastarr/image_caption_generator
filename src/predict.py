@@ -11,6 +11,7 @@ import argparse
 from src.data_utils.save_and_load_data import (
     load_representations_captions_images,
     load_predictions,
+    load_idx_word_dicts,
     save_predictions,
 )
 from src.data_utils.caption_preprocessing import map_idx_to_word
@@ -22,49 +23,17 @@ from src.analysis_utils.visualization import (
 from models.decoder import Decoder
 from config.core import config
 
-
-def predict_decoder():
-    image_representations_test, _, _ = load_representations_captions_images("test")
-
-    print("Loading decoder weights...")
-    decoder = Decoder()
-    decoder.build(input_shape=(5000, 20480))
-    decoder.load_weights(
-        os.path.join(config.model_folder, config.filenames.model_weights),
-        by_name=True,
-        skip_mismatch=True,
-    )
-
-    print("Getting predictions from decoder...")
-    predictions_idx = decoder.predict(image_representations_test)
-    predictions_word = map_idx_to_word(predictions_idx)
-
-    print("Saving predictions...")
-    save_predictions(predictions_word)
-    return predictions_word
-
-
-def show_bleu_scores(predictions):
-    _, captions_test, _ = load_representations_captions_images("test")
-    captions_word = map_idx_to_word(captions_test)
-
-    # Calculate BLEU scores
-    independent_bleu_scores = get_bleu_scores(
-        captions_word, predictions, smoothing=1, independent=True
-    )
-    print(
-        "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
-    )
-
-    bleu_score_histogram(independent_bleu_scores)
-
-
-def show_prediciton_examples(predictions):
-    _, _, images_test = load_representations_captions_images("test")
-    show_10_images_and_captions_grid(images_test, predictions, encoded=False)
-
-
 if __name__ == "__main__":
+
+    # Load data
+    (
+        image_representations_test,
+        captions_test,
+        images_test,
+    ) = load_representations_captions_images("test")
+    idx_to_word, _ = load_idx_word_dicts()
+    captions_word = map_idx_to_word(captions_test, idx_to_word)
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--load",
@@ -78,7 +47,28 @@ if __name__ == "__main__":
         predictions = load_predictions()
     else:
         print("Retrieving predictions from decoder.")
-        predictions = predict_decoder()
+        print("Loading decoder weights...")
+        decoder = Decoder()
+        decoder.build(input_shape=(5000, 20480))
+        decoder.load_weights(
+            os.path.join(config.model_folder, config.filenames.model_weights),
+            by_name=True,
+            skip_mismatch=True,
+        )
 
-    show_bleu_scores(predictions)
-    show_prediciton_examples(predictions)
+        print("Getting predictions from decoder...")
+        predictions_idx = decoder.predict(image_representations_test)
+        predictions_word = map_idx_to_word(predictions_idx, idx_to_word)
+
+        print("Saving predictions...")
+        save_predictions(predictions_word)
+
+    # Calculate BLEU scores
+    independent_bleu_scores = get_bleu_scores(
+        captions_word, predictions_word, smoothing=1, independent=True
+    )
+    print(
+        "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
+    )
+    bleu_score_histogram(independent_bleu_scores)
+    show_10_images_and_captions_grid(images_test, predictions_word, encoded=False)

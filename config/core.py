@@ -1,7 +1,9 @@
 from pathlib import Path
+from typing import Sequence
 
 from pydantic import BaseModel, validator
 from strictyaml import load, YAML
+import tensorboard
 
 # Project Directories
 CONFIG_FILE_PATH = Path("config/config.yml")
@@ -10,6 +12,24 @@ CONFIG_FILE_PATH = Path("config/config.yml")
 Configuration setup inspired by
 https://github.com/trainindata/testing-and-monitoring-ml-deployments/tree/master/packages/gradient_boosting_model
 """
+
+
+class ModelCheckpointConfig(BaseModel):
+    monitor: str
+    mode: str
+    save_best_only: bool
+    save_weights_only: bool
+
+
+class TensorBoardConfig(BaseModel):
+    update_freq: int
+
+
+class EarlyStoppingConfig(BaseModel):
+    monitor: str
+    mode: str
+    min_delta: int
+    patience: int
 
 
 class FileNameConfig(BaseModel):
@@ -26,6 +46,9 @@ class FileNameConfig(BaseModel):
 
 class Config(BaseModel):
     filenames: FileNameConfig
+    early_stopping: EarlyStoppingConfig
+    tensorboard: TensorBoardConfig
+    model_checkpoint: ModelCheckpointConfig
 
     # data locations
     input_filepath: str
@@ -41,6 +64,10 @@ class Config(BaseModel):
     batch_size: int
     epochs: int
     learning_rate: float
+    experiment_name: str
+    verbose: bool
+    loss: str
+    metric: str
 
 
 def find_config_file() -> Path:
@@ -69,7 +96,11 @@ def create_config(parsed_config: YAML = None) -> Config:
 
     # specify the data attribute from the strictyaml YAML type.
     _config = Config(
-        filenames=FileNameConfig(**parsed_config.data), **parsed_config.data
+        filenames=FileNameConfig(**parsed_config.data),
+        early_stopping=EarlyStoppingConfig(**parsed_config.data),
+        tensorboard=TensorBoardConfig(**parsed_config.data),
+        model_checkpoint=ModelCheckpointConfig(**parsed_config.data),
+        **parsed_config.data,
     )
 
     return _config

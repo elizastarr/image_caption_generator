@@ -4,7 +4,7 @@ import keras.backend as K
 from tensorflow.keras import Model
 
 
-class LSTM_learner(Model):
+class LSTMLearner(Model):
     def __init__(
         self,
         image_representation_dim: int = 20480,
@@ -17,7 +17,7 @@ class LSTM_learner(Model):
         **kwargs
     ):
 
-        super(LSTM_learner, self).__init__(**kwargs)
+        super(LSTMLearner, self).__init__(**kwargs)
         self.image_representation_dim = image_representation_dim
         self.max_caption_length = max_caption_length
 

@@ -1,5 +1,5 @@
 import operator
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from src.data_utils.save_and_load_data import load_idx_word_dicts
 
@@ -56,8 +56,7 @@ def get_caption_dictionaries(captions: List[List]) -> Tuple[dict, dict, int, int
     return idx_to_word, word_to_idx, max_caption_length, total_words, num_unique_words
 
 
-def map_idx_to_word(captions_idx: List[List]) -> List[List]:
-    idx_to_word, _ = load_idx_word_dicts()
+def map_idx_to_word(captions_idx: List[List], idx_to_word: Dict) -> List[List]:
     captions_word = [
         [idx_to_word.get(key) for key in caption] for caption in captions_idx
     ]

@@ -3,12 +3,12 @@ import sys
 REQUIRED_PYTHON = "python3"
 
 
-def test_custom():
-    from src.models.LSTM_learner import LSTM_learner
+def test_models():
+    from src.models.LSTM_learner import LSTMLearner
     from src.models.decoder import Decoder
 
     try:
-        LSTM_learner()
+        LSTMLearner()
         print("LSTM Learner class instantiates.")
     except:
         print("LSTM Learner class failure.")
@@ -20,7 +20,7 @@ def test_custom():
 
 
 def main():
-    test_custom()
+    test_models()
 
     system_major = sys.version_info.major
     if REQUIRED_PYTHON == "python":

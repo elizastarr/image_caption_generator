@@ -162,7 +162,7 @@ Project Organization
         ├── models         <- Model class definitions.
         │   │
         │   ├── decoder.py
-        │   └── LSTM_learner.py
+        │   └── LSTMLearner.py
         │
         └── analysis_utils <- Useful functions for evaluating the model and exploring the data.
             │
