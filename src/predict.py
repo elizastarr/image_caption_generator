@@ -9,7 +9,7 @@ import os
 import argparse
 
 from src.data_utils.save_and_load_data import (
-    load_representations_captions_images,
+    load_reps_captions_images,
     load_predictions,
     load_idx_word_dicts,
     save_predictions,
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         image_representations_test,
         captions_test,
         images_test,
-    ) = load_representations_captions_images("test")
+    ) = load_reps_captions_images("test")
     idx_to_word, _ = load_idx_word_dicts()
     captions_word = map_idx_to_word(captions_test, idx_to_word)
 
@@ -44,12 +44,12 @@ if __name__ == "__main__":
 
     if args.load:
         print("Loading predictions from data/ folder.")
-        predictions = load_predictions()
+        predictions_word = load_predictions()
     else:
         print("Retrieving predictions from decoder.")
         print("Loading decoder weights...")
-        decoder = Decoder()
-        decoder.build(input_shape=(5000, 20480))
+        decoder = Decoder(max_caption_length = config.max_caption_length, num_unique_words=config.num_unique_words)
+        decoder.build(input_shape=image_representations_test.shape)
         decoder.load_weights(
             os.path.join(config.model_folder, config.filenames.model_weights),
             by_name=True,
@@ -71,4 +71,4 @@ if __name__ == "__main__":
         "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
     )
     bleu_score_histogram(independent_bleu_scores)
-    show_10_images_and_captions_grid(images_test, predictions_word, encoded=False)
+    show_10_images_and_captions_grid(images=images_test, captions=predictions_word, idx_to_word=idx_to_word, encoded=False)

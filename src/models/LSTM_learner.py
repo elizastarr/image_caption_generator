@@ -7,10 +7,10 @@ from tensorflow.keras import Model
 class LSTMLearner(Model):
     def __init__(
         self,
+        max_caption_length: int,
+        num_unique_words: int,
         image_representation_dim: int = 20480,
-        max_caption_length: int = 35,
         embedding_dim: int = 512,
-        num_words: int = 2992,
         lstm_dim: int = 500,
         lstm_dropout: float = 0.5,
         recurrent_dropout: float = 0.1,
@@ -22,7 +22,7 @@ class LSTMLearner(Model):
         self.max_caption_length = max_caption_length
 
         self.image_emb = Dense(embedding_dim, name="image_embedding")
-        self.caption_emb = Embedding(num_words, embedding_dim, name="caption_embedding")
+        self.caption_emb = Embedding(num_unique_words, embedding_dim, name="caption_embedding")
         self.lstm = LSTM(
             lstm_dim,
             return_sequences=True,
@@ -30,17 +30,20 @@ class LSTMLearner(Model):
             recurrent_dropout=recurrent_dropout,
             name="lstm",
         )
-        self.dense_output = Dense(num_words, activation="softmax", name="output")
+        self.dense_output = Dense(num_unique_words, activation="softmax", name="output")
 
     def call(self, inputs: List):
         input_image, input_caption = inputs
+        # Map the images and captions to the same 512D space
         x_image = K.expand_dims(
             self.image_emb(input_image), axis=1
-        )  # K.expand_dims: (None, 512) -> (None, 1, 512)
+        )  # (None, 512) -> (None, 1, 512)
         x_caption = self.caption_emb(input_caption)
+
+        # Concatenation: (None, 1, 512) + (None, 34, 512) -> (None, 35, 512)
         x = concatenate(
             [x_image, x_caption], axis=1, name="concatenation"
-        )  # (None, 1, 512) + (None, 34, 512) -> (None, 35, 512)
+        )  
         x = self.lstm(x)
         return self.dense_output(x)
 

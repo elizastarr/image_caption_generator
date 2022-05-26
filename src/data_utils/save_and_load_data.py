@@ -11,7 +11,7 @@ Savers
 """
 
 
-def save_representations_captions_images(
+def save_reps_captions_images(
     image_representations: np.ndarray,
     captions: List[List],
     images: np.ndarray,
@@ -68,7 +68,7 @@ def load_raw() -> Tuple[np.ndarray, List[List]]:
     return images, captions
 
 
-def load_representations_captions_images(
+def load_reps_captions_images(
     stage: str,
 ) -> Tuple[np.ndarray, List[List], np.ndarray]:
     if stage not in ["train", "val", "test"]:

@@ -68,6 +68,8 @@ class Config(BaseModel):
     verbose: bool
     loss: str
     metric: str
+    max_caption_length: int
+    num_unique_words: int 
 
 
 def find_config_file() -> Path:

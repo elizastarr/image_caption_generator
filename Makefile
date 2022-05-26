@@ -32,5 +32,3 @@ else
 	exit
 endif
 
-test_environment:
-	$(PYTHON_INTERPRETER) tests/test_environment.py

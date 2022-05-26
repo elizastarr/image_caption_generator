@@ -13,16 +13,13 @@ Set Up the Project
 3. Activate environment.
    - ```$ conda activate image_caption_generator```
 
-4. (Optional) Run environment test.
-    - ```$ make test_environment```
-
 5. Download the data and pretrained model for this project from Google Drive and place in base directory.
     - [Download Folder](https://drive.google.com/drive/folders/1s2X-gJgibEo6AVff9HqgqJ_1EkIkFrua?usp=sharing)
 
 
 The Dataset
 ------------
-The raw data in ```data/raw``` contains 8,000 *preprocessed* images and captions per image from the [Flicker8k](https://www.kaggle.com/adityajn105/flickr8k/activity) dataset. The Kaggle data has already been preprocessed in the following ways (code not provided):
+The raw data in ```data/raw``` contains 8,000 *preprocessed* images and 5 captions per image from the [Flicker8k](https://www.kaggle.com/adityajn105/flickr8k/activity) dataset. The Kaggle data has already been preprocessed in the following ways (code not provided):
 - RGB images are rescaled to 128 x 128 x 3
 - Captions do not have punctuation or special tokens and are in lower case
 - Each caption is now a list of strings e.g. ['the', 'cow', 'jumped', 'over', 'the',' moon']
@@ -35,16 +32,17 @@ The raw data in ```data/raw``` contains 8,000 *preprocessed* images and captions
 
 Further Preprocessing
 ------------
+The additional preprocessing steps listed below are required to obtain the training, validation, and test datasets.
 1. Obtain 20480-dimensional representations of the images from the first convolutional layer of MobileNetV2 (pretrained on ImageNet).
-2. Insert the stop word character '_' at the end of each string. Map the words to integers sorted by frequency using a dictionary.
+2. Insert the stop word character '_' at the end of each caption. Map the words to integers sorted by frequency using a dictionary.
 3. Train-test-validation splits.
 
-To preprocess the data again (not neccessary), run
-- ```$ python src/make_dataset.py data/raw data/processed```
+To preprocess the data in `data/raw` and save the data in `data/processed`, run
+- ```$ python src/make_dataset.py```
 
 Training a Long-Short-Term-Memory Learner
 ------------
-**Purpose:** Learn weights for the caption generating model
+**Purpose:** Learn weights for the caption generating model (the decoder)
 
 **Inputs:**
 1. Image representations
@@ -74,16 +72,13 @@ See ```logs/train/``` and ```logs/validation/``` for TensorBoard event files.
 To train and recieve final evaluation scores, run:
 - ```$ python src/train.py```
 
-To load the trained model and recieve final evaluation scores, run:
-- ```$ python src/train.py --load```
-
 **Final Evaluation on Whole Datasets**
 - Train: Categorical Cross Entropy: 2.25, Categorical Accuracy: 0.72
 - Validation: Categorical Cross Entropy: 2.34, Categorical Accuracy: 0.72
 
 Predicting Captions with an LSTM Decoder
 ------------
-We use another LSTM model with the trained weights from the LSTM Learner to predict captions given image representations.
+We use another LSTM with the trained weights from the LSTM Learner to predict captions given image representations.
 
 **Input:**
 1. Image representations
@@ -117,7 +112,9 @@ Tests
 To run all code tests:
 
 ```python -m pytest```
+
 or
+
 ```pytest tests```
 
 Project Organization

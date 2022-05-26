@@ -1,7 +1,7 @@
 import pytest
 
 from src.data_utils.save_and_load_data import (
-    load_representations_captions_images,
+    load_reps_captions_images,
     load_raw,
 )
 from src.data_utils.image_representations import get_image_representations
@@ -16,7 +16,7 @@ def raw_data_100():
 
 @pytest.fixture(scope="session")
 def processed_data_100():
-    image_representations, captions, images = load_representations_captions_images(
+    image_representations, captions, images = load_reps_captions_images(
         "test"
     )
     return image_representations[:100], captions[:100], images[:100]

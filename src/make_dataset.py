@@ -6,7 +6,7 @@ from data_utils.image_representations import get_image_representations
 from data_utils.caption_preprocessing import get_caption_dictionaries
 from data_utils.split_and_format import train_test_val_split, format_as_matrix
 from data_utils.save_and_load_data import (
-    save_representations_captions_images,
+    save_reps_captions_images,
     save_idx_word_dicts,
     load_raw,
 )
@@ -39,8 +39,12 @@ def main():
         total_words,
         num_unique_words,
     ) = get_caption_dictionaries(captions)
+    print(f"Maximum caption length: {max_caption_length}.")
     print(f"{total_words} total words in the corpus.")
     print(f"{num_unique_words} unique words in the corpus.")
+
+    assert max_caption_length == config.max_caption_length
+    assert num_unique_words == config.num_unique_words
 
     print(f"Splitting data into train, test, and validation...")
     (
@@ -65,13 +69,13 @@ def main():
     print(f"Saving processed data to f{config.output_filepath}...")
     if not os.path.exists(config.output_filepath):
         os.makedirs(config.output_filepath)
-    save_representations_captions_images(
+    save_reps_captions_images(
         image_representations_train, captions_train, images_train, "train"
     )
-    save_representations_captions_images(
+    save_reps_captions_images(
         image_representations_val, captions_val, images_val, "val"
     )
-    save_representations_captions_images(
+    save_reps_captions_images(
         image_representations_test, captions_test, images_test, "test"
     )
     save_idx_word_dicts(idx_to_word=idx_to_word, word_to_idx=word_to_idx)

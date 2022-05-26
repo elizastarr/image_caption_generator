@@ -25,6 +25,8 @@ learning_rate: 0.001
 experiment_name: default
 loss: sparse_categorical_crossentropy
 metric: sparse_categorical_accuracy
+max_caption_length: 35
+num_unique_words: 2992
 
 # callbacks
 monitor: val_loss

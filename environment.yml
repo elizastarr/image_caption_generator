@@ -11,12 +11,13 @@ dependencies:
   - ipykernel
   - numpy=1.19
   - matplotlib
-  - nltk==3.6.2
+  - nltk=3.6.2
   - pre-commit=2.19.0
   - pytest>=5.3.2,<6.0.0
   - pip
+  - pydantic
   - strictyaml
-  - sklearn
+  - scikit-learn
   - pip:
     - image-caption-generator-elizastarr
     - jupyter

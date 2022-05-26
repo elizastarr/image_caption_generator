@@ -6,22 +6,15 @@ import os
 
 from models.LSTM_learner import LSTMLearner
 from trainers.LSTM_trainer import LSTMTrainer
-from data_utils.save_and_load_data import load_representations_captions_images
+from data_utils.save_and_load_data import load_reps_captions_images
 from config.core import config
 
 
 if __name__ == "__main__":
 
     # Load data
-    (
-        representations_train,
-        captions_train,
-        _,
-    ) = load_representations_captions_images("train")
-    representations_val, captions_val, _ = load_representations_captions_images("val")
-
-    representations_train = representations_train[:100]
-    captions_train = captions_train[:100]
+    representations_train, captions_train,  _, = load_reps_captions_images("train")
+    representations_val, captions_val, _ = load_reps_captions_images("val")
 
     # remove last stopword from each caption
     training_data = (
@@ -37,7 +30,7 @@ if __name__ == "__main__":
     )
 
     print("Training model from scratch...")
-    model = LSTMLearner()
+    model = LSTMLearner(max_caption_length = config.max_caption_length, num_unique_words=config.num_unique_words)
     trainer = LSTMTrainer(
         model=model,
         training_data=training_data,
