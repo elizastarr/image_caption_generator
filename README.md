@@ -102,13 +102,17 @@ To load the predictions and see examples, run:
 
 Caption Analysis
 ------------
-We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf).
+We [analyze](https://github.com/elizastarr/image_caption_generator/blob/master/reports/prediction_analysis.pdf) the captions using BLEU (Bilingual Evaluation Understudy Score) scores in `notebooks/prediction_analysis.ipynb`. BLEU scores range from 0 to 1 (highest) are "a method of automatic machine translation evaluation that is quick, inexpensive, and language-independent, that correlates highly with human evaluation" [(Papineni et al., 2002)](https://aclanthology.org/P02-1040.pdf). They are the precision of word n-grams between generated and reference sentences.
 
-The histogram below shows the distribution of scores given different n-grams. The independent BLEU-1 scores (using 1-grams) have a mean of 0.72 and maximum of 0.97. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row.
+The histogram below shows the distribution of scores given different n-grams. The independent BLEU-1 scores (using 1-grams) have a mean of 0.72. The model is slightly better at replicating certain key words than at replicating the word order or set of 2-4 words in a row.
 
 **10 Sample images and predicted captions**
 
 ![Independent BLUE score histogram](https://github.com/elizastarr/image_caption_generator/blob/master/reports/figures/independent_bleu.png?raw=true)
+
+Comparison to Paper
+------------
+The original authors use a larger dataset (Flickr30k), a larger beam size of 20 (compared to 1), and a more complex model to obtain the image representations. They achieve a BLEU-1 score of .66, but do not specify how this score was aggregated.
 
 Tests
 ------------
