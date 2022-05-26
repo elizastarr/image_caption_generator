@@ -13,7 +13,11 @@ from config.core import config
 if __name__ == "__main__":
 
     # Load data
-    representations_train, captions_train,  _, = load_reps_captions_images("train")
+    (
+        representations_train,
+        captions_train,
+        _,
+    ) = load_reps_captions_images("train")
     representations_val, captions_val, _ = load_reps_captions_images("val")
 
     # remove last stopword from each caption
@@ -30,7 +34,10 @@ if __name__ == "__main__":
     )
 
     print("Training model from scratch...")
-    model = LSTMLearner(max_caption_length = config.max_caption_length, num_unique_words=config.num_unique_words)
+    model = LSTMLearner(
+        max_caption_length=config.max_caption_length,
+        num_unique_words=config.num_unique_words,
+    )
     trainer = LSTMTrainer(
         model=model,
         training_data=training_data,

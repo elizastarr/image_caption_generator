@@ -39,12 +39,14 @@ class Decoder(Model):
 
     def call(self, inputs: tf.Tensor):
         image_embedding = self.image_emb(inputs)
-        image_embedding = K.expand_dims(image_embedding, axis=1)  # (None, 512) -> (None, 1, 512)
+        image_embedding = K.expand_dims(
+            image_embedding, axis=1
+        )  # (None, 512) -> (None, 1, 512)
 
         # Image is only inputted once
         lstm_out, initial_hidden_state, initial_cell_state = self.lstm(image_embedding)
         state = [initial_hidden_state, initial_cell_state]
-        
+
         word_prob_dist = self.dense_output(lstm_out)  # output: (None, num_unique_words)
         word = K.argmax(word_prob_dist, axis=1)  # output: (None, )
         caption = [word]
@@ -57,7 +59,9 @@ class Decoder(Model):
             )
             state = [hidden_state, cell_state]
 
-            word_prob_dist = self.dense_output(lstm_out)  # output: (None, num_unique_words)
+            word_prob_dist = self.dense_output(
+                lstm_out
+            )  # output: (None, num_unique_words)
             word = K.argmax(word_prob_dist, axis=1)
             caption.append(word)
             caption_embedding = self.caption_emb(word)  # output: 512D

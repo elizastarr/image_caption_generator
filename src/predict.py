@@ -48,7 +48,10 @@ if __name__ == "__main__":
     else:
         print("Retrieving predictions from decoder.")
         print("Loading decoder weights...")
-        decoder = Decoder(max_caption_length = config.max_caption_length, num_unique_words=config.num_unique_words)
+        decoder = Decoder(
+            max_caption_length=config.max_caption_length,
+            num_unique_words=config.num_unique_words,
+        )
         decoder.build(input_shape=image_representations_test.shape)
         decoder.load_weights(
             os.path.join(config.model_folder, config.filenames.model_weights),
@@ -71,4 +74,9 @@ if __name__ == "__main__":
         "Independent BLEU score example: {}".format(independent_bleu_scores.iloc[0, :])
     )
     bleu_score_histogram(independent_bleu_scores)
-    show_10_images_and_captions_grid(images=images_test, captions=predictions_word, idx_to_word=idx_to_word, encoded=False)
+    show_10_images_and_captions_grid(
+        images=images_test,
+        captions=predictions_word,
+        idx_to_word=idx_to_word,
+        encoded=False,
+    )

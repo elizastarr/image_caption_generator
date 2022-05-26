@@ -31,4 +31,3 @@ else
 	@echo ">>> Install conda first."
 	exit
 endif
-

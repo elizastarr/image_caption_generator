@@ -16,9 +16,7 @@ def raw_data_100():
 
 @pytest.fixture(scope="session")
 def processed_data_100():
-    image_representations, captions, images = load_reps_captions_images(
-        "test"
-    )
+    image_representations, captions, images = load_reps_captions_images("test")
     return image_representations[:100], captions[:100], images[:100]
 
 

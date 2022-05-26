@@ -22,7 +22,9 @@ class LSTMLearner(Model):
         self.max_caption_length = max_caption_length
 
         self.image_emb = Dense(embedding_dim, name="image_embedding")
-        self.caption_emb = Embedding(num_unique_words, embedding_dim, name="caption_embedding")
+        self.caption_emb = Embedding(
+            num_unique_words, embedding_dim, name="caption_embedding"
+        )
         self.lstm = LSTM(
             lstm_dim,
             return_sequences=True,
@@ -41,9 +43,7 @@ class LSTMLearner(Model):
         x_caption = self.caption_emb(input_caption)
 
         # Concatenation: (None, 1, 512) + (None, 34, 512) -> (None, 35, 512)
-        x = concatenate(
-            [x_image, x_caption], axis=1, name="concatenation"
-        )  
+        x = concatenate([x_image, x_caption], axis=1, name="concatenation")
         x = self.lstm(x)
         return self.dense_output(x)
 

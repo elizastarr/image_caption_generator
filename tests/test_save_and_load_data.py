@@ -22,9 +22,7 @@ def test_save_reps_captions_images_raises_error_stage(processed_data_100):
 
     # When
     with pytest.raises(ValueError) as error:
-        sld.save_reps_captions_images(
-            image_representations, captions, images, stage
-        )
+        sld.save_reps_captions_images(image_representations, captions, images, stage)
 
     # Then
     assert "Stage must be either train, val, or test" in str(error.value)

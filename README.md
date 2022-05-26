@@ -13,6 +13,9 @@ Set Up the Project
 3. Activate environment.
    - ```$ conda activate image_caption_generator```
 
+4. (Optional) To use pre-commit, run
+   - ```pip install pre-commit```
+
 5. Download the data and pretrained model for this project from Google Drive and place in base directory.
     - [Download Folder](https://drive.google.com/drive/folders/1s2X-gJgibEo6AVff9HqgqJ_1EkIkFrua?usp=sharing)
 

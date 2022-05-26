@@ -69,7 +69,7 @@ class Config(BaseModel):
     loss: str
     metric: str
     max_caption_length: int
-    num_unique_words: int 
+    num_unique_words: int
 
 
 def find_config_file() -> Path:
